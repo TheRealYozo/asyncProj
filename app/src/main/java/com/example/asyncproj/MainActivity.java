@@ -1,5 +1,6 @@
 package com.example.asyncproj;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
@@ -11,6 +12,7 @@ import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -26,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private Button btnStart, btnStop;
     private musAsync async = new musAsync(this);
+    private AlertDialog.Builder adb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +47,28 @@ public class MainActivity extends AppCompatActivity {
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                async = new musAsync(MainActivity.this);
-                async.execute();
+
+                adb = new AlertDialog.Builder(MainActivity.this);
+                adb.setTitle("are you sure?");
+                adb.setMessage("This is a two button's alert");
+
+                adb.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        async = new musAsync(MainActivity.this);
+                        async.execute();
+                    }
+                });
+
+                adb.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                AlertDialog ad = adb.create();
+                ad.show();
             }
 
         });
@@ -53,10 +76,29 @@ public class MainActivity extends AppCompatActivity {
         btnStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (async != null) {
-                    async.cancel(true);
-                    async = null;
+                adb = new AlertDialog.Builder(MainActivity.this);
+                adb.setTitle("are you sure?");
+                adb.setMessage("This is a two button's alert");
+
+                adb.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (async != null) {
+                            async.cancel(true);
+                            async = null;
+                        }
                     }
+                });
+
+                adb.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                AlertDialog ad = adb.create();
+                ad.show();
             }
         });
     }

@@ -1,5 +1,6 @@
 package com.example.asyncproj;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,6 +10,7 @@ import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -20,6 +22,7 @@ public class ThreadMusic extends AppCompatActivity {
     private Button btnStart, btnStop;
     private runnableMusic runnable = new runnableMusic();
     private Thread thread = new Thread(runnable);
+    private AlertDialog.Builder adb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +42,28 @@ public class ThreadMusic extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                thread.start();
+
+                adb = new AlertDialog.Builder(ThreadMusic.this);
+                adb.setTitle("are you sure?");
+                adb.setMessage("This is a two button's alert");
+
+                adb.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        thread.start();
+                    }
+                });
+
+                adb.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                AlertDialog ad = adb.create();
+                ad.show();
+
             }
 
         });
