@@ -50,8 +50,6 @@ public class MainActivity extends AppCompatActivity {
 
                 adb = new AlertDialog.Builder(MainActivity.this);
                 adb.setTitle("are you sure?");
-                adb.setMessage("This is a two button's alert");
-
                 adb.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
